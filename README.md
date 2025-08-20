@@ -20,7 +20,7 @@ To keep our work organized and clean, we are following this structure:
   * Each task has its own branch following this naming convention:
 
     ```
-    development/<task-name>
+    development-<task-name>
     ```
   * 🚫 Always switch to your **task branch** before working and pushing your changes.
 
