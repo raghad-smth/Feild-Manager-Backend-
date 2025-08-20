@@ -32,6 +32,3 @@ Inside the `.github/workflows/` folder, you’ll find our **YAML file**.
 
 * This file configures **GitHub Actions**, which run automated checks (such as building and testing the project) whenever we push or open a Pull Request.
 * Think of it as our project’s **automation script**: it makes sure everything works smoothly before merging changes.
-
-
-Do you want me to also add a **visual diagram of the branching strategy** (like `main` ← `development` ← `task branches`) in the README? That usually helps teammates “get it” instantly.
