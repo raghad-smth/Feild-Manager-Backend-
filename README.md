@@ -41,6 +41,3 @@
 
 * This keeps **main clean**, ensures all work is reviewed, and avoids conflicts.
 * Each teammate only sees others’ changes once they’re merged into `development`.
-
-* This file configures **GitHub Actions**, which run automated checks (such as building and testing the project) whenever we push or open a Pull Request.
-* Think of it as our project’s **automation script**: it makes sure everything works smoothly before merging changes.
