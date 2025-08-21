@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-FeildsApplication<feilds>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.example.feilds.FeildsApplication",
+      "projectName": "feilds",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
