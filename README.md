@@ -1,34 +1,40 @@
 # Feild Manager Backend Repo Workflow  
 
 ## Branching Strategy
+* **main** → stable, production-ready code. No direct pushes.
+* **development** → base branch for active work. All features merge here first.
+* **feature branches** → each task has its own branch, named:
 
-To keep our work organized and clean, we are following this structure:
+  ```
+  development-taskname
+  ```
+## Workflow for Each Task
 
-* **`main` branch**
+1. Switch to development and pull latest updates:
 
-  * This is our final, production-ready branch.
-  * 🚫 **Do not push directly to `main`**.
-  * You can only merge into `main` through a **Pull Request (PR)**.
+   ```bash
+   git checkout development
+   git pull origin development
+   ```
+2. Create a new branch for your task:
 
-* **`development` branch**
+   ```bash
+   git checkout -b development-taskname
+   ```
+   Example: `development-registration`
+3. Work on your task (add controllers, services, repos, models, etc.).
+4. Commit and push your changes:
 
-  * Used to integrate tasks before merging them into `main`.
-  * You can push your finished task branch here after testing it.
-
-* **Task branches**
-
-  * Each task has its own branch following this naming convention:
-
-    ```
-    development-<task-name>
-    ```
-  * 🚫 Always switch to your **task branch** before working and pushing your changes.
+   ```bash
+   git add .
+   git commit -m "Describe your task here"
+   git push -u origin development-taskname
+   ```
+5. Open a **Pull Request (PR)** into the `development` branch.
+6. Once reviewed and approved, it will be merged into `development`.
+7. Later, when the project is stable, `development` will be merged into `main`.
 
 ---
 
-## Workflow with GitHub Actions
-
-Inside the `.github/workflows/` folder, you’ll find our **YAML file**.
-
-* This file configures **GitHub Actions**, which run automated checks (such as building and testing the project) whenever we push or open a Pull Request.
-* Think of it as our project’s **automation script**: it makes sure everything works smoothly before merging changes.
+* This keeps **main clean**, ensures all work is reviewed, and avoids conflicts.
+* Each teammate only sees others’ changes once they’re merged into `development`.
