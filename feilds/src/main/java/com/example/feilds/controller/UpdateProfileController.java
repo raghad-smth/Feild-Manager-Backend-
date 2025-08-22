@@ -24,8 +24,10 @@ public class UpdateProfileController {
             @RequestParam(required = false) String password) {
 
         try {
-            Users updatedUser = updateProfileService.updateProfile(userId, name, phone, password);
+            // Call service to update user
 
+            Users updatedUser = updateProfileService.updateProfile(userId, name, phone, password);
+            // Success response payload
             Map<String, Object> response = new HashMap<>();
             response.put("status", "success");
             response.put("message", "Profile updated successfully");
@@ -34,6 +36,7 @@ public class UpdateProfileController {
             return ResponseEntity.ok(response);
 
         } catch (IllegalArgumentException e) {
+            // Handle validation errors (bad request)
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("status", "error");
             errorResponse.put("message", e.getMessage());
@@ -41,6 +44,7 @@ public class UpdateProfileController {
             return ResponseEntity.badRequest().body(errorResponse);
 
         } catch (RuntimeException e) {
+            // Handle case: User not found
             if (e.getMessage().contains("not found")) {
                 Map<String, Object> errorResponse = new HashMap<>();
                 errorResponse.put("status", "error");
@@ -48,7 +52,7 @@ public class UpdateProfileController {
                 errorResponse.put("errorCode", "USER_NOT_FOUND");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
             }
-
+            // Handle unexpected errors (internal server error)
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("status", "error");
             errorResponse.put("message", "An unexpected error occurred");

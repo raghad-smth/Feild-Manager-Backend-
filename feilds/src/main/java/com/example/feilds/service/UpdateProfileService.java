@@ -20,7 +20,7 @@ public class UpdateProfileService {
                 .orElseThrow(() -> new RuntimeException("User with ID " + userId + " not found"));
 
         boolean hasUpdates = false;
-
+        // ===== Update Name =====
         if (name != null && !name.trim().isEmpty()) {
             if (name.trim().length() < 2) {
                 throw new IllegalArgumentException("Name must be at least 2 characters long");
@@ -31,7 +31,7 @@ public class UpdateProfileService {
             user.setName(name.trim());
             hasUpdates = true;
         }
-
+        // ===== Update Phone =====
         if (phone != null && !phone.trim().isEmpty()) {
             String cleanPhone = phone.trim().replaceAll("[^0-9]", "");
             if (cleanPhone.length() < 8 || cleanPhone.length() > 15) {
@@ -40,7 +40,7 @@ public class UpdateProfileService {
             user.setPhone(cleanPhone);
             hasUpdates = true;
         }
-
+        // ===== Update Password =====
         if (password != null && !password.trim().isEmpty()) {
             if (password.trim().length() < 6) {
                 throw new IllegalArgumentException("Password must be at least 6 characters long");
@@ -51,11 +51,11 @@ public class UpdateProfileService {
             user.setPassword(password.trim());
             hasUpdates = true;
         }
-
+        // If no fields were updated, throw error
         if (!hasUpdates) {
             throw new IllegalArgumentException("No valid fields provided for update");
         }
 
-        return updateProfileRepository.save(user); 
+        return updateProfileRepository.save(user);
     }
 }
