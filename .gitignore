@@ -1,0 +1,42 @@
+# Ignore IDE files
+.idea/
+
+# Ignore build output
+/target/
+
+# Ignore Maven wrapper jar
+.mvn/wrapper/maven-wrapper.jar
+
+# Ignore STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# Ignore IntelliJ IDEA
+*.iws
+*.iml
+*.ipr
+
+# Ignore NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+# VS Code
+.vscode/
+
+# Ignore everything in target and build except source folders
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Help file
+HELP.md
