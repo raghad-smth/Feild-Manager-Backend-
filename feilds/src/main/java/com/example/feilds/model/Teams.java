@@ -2,8 +2,6 @@ package com.example.feilds.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.*;
-
 @Entity
 @Table(name = "teams")
 @Data
