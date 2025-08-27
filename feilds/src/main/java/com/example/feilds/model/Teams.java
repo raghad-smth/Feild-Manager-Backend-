@@ -18,5 +18,6 @@ public class Teams {
     private String name;
 
     @Column(name = "is_active", nullable = false)
+    @Builder.Default
     private Boolean isActive = true;
 }
