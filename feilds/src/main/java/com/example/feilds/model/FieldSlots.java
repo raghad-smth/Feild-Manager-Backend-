@@ -24,11 +24,12 @@ public class FieldSlots {
     @JoinColumn(name = "week_day_id", nullable = false)
     private WeekDays weekDay;
 
-    @Column(nullable = false)
-    private LocalTime from;
+    // Avoid using reserved SQL keywords like 'from' and 'to'
+    @Column(name = "from_time", nullable = false)
+    private LocalTime fromTime;
 
-    @Column(nullable = false)
-    private LocalTime to;
+    @Column(name = "to_time", nullable = false)
+    private LocalTime toTime;
 
     @Column(nullable = false)
     private BigDecimal price;
