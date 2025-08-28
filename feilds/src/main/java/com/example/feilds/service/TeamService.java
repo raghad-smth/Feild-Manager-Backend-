@@ -40,7 +40,7 @@ public class TeamService {
         }
 
         Users player = playerOpt.get();
-        if (!"player".equals(player.getRole())) {
+    if (player.getRole() != Users.Role.player) {
             throw new IllegalArgumentException("Only players can create teams");
         }
 
@@ -105,7 +105,7 @@ public class TeamService {
     @Transactional
     public void joinTeam(Integer teamId, Integer playerId) {
         // Validate team exists and is active
-        Optional<Teams> teamOpt = teamRepository.findById(Long.valueOf(teamId));
+    Optional<Teams> teamOpt = teamRepository.findById(teamId);
         if (!teamOpt.isPresent()) {
             throw new IllegalArgumentException("Team not found");
         }
@@ -122,7 +122,7 @@ public class TeamService {
         }
 
         Users player = playerOpt.get();
-        if (!"player".equals(player.getRole())) {
+    if (player.getRole() != Users.Role.player) {
             throw new IllegalArgumentException("Only players can join teams");
         }
 
@@ -177,7 +177,7 @@ public class TeamService {
                     );
                 } else {
                     // Last member leaving, deactivate the team
-                    Optional<Teams> teamOpt = teamRepository.findById(Long.valueOf(teamId));
+                    Optional<Teams> teamOpt = teamRepository.findById(teamId);
                     if (teamOpt.isPresent()) {
                         Teams team = teamOpt.get();
                         team.setIsActive(false);
@@ -197,7 +197,7 @@ public class TeamService {
      */
     public Map<String, Object> getTeamWithMembers(Integer teamId) {
         // Get team
-        Optional<Teams> teamOpt = teamRepository.findById(Long.valueOf(teamId));
+    Optional<Teams> teamOpt = teamRepository.findById(teamId);
         if (!teamOpt.isPresent()) {
             throw new IllegalArgumentException("Team not found");
         }

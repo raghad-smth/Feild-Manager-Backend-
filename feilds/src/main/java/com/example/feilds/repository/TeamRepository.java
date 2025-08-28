@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TeamRepository extends JpaRepository<Teams, Long> {
+public interface TeamRepository extends JpaRepository<Teams, Integer> {
 
     /**
      * Check if a team name already exists
