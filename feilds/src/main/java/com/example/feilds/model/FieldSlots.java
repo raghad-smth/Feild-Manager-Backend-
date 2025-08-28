@@ -27,10 +27,11 @@ public class FieldSlots {
     @JoinColumn(name = "week_day_id", nullable = false)
     private WeekDays weekDay;
 
-    @Column(nullable = false)
+
+    @Column(name = "`from`", nullable = false)
     private LocalTime from;
 
-    @Column(nullable = false)
+    @Column(name = "`to`", nullable = false)
     private LocalTime to;
 
     @Column(nullable = false)

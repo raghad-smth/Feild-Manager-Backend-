@@ -19,4 +19,8 @@ public class WeekDays {
 
     @Column(nullable = false)
     private String name;
+    // Minimal constructor to use in your booking endpoint
+    public WeekDays(Integer id) {
+        this.id = id;
+    }
 }
