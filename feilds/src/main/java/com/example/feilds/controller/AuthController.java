@@ -38,11 +38,29 @@ public class AuthController {
      * - Returns the user if login is successful
      */
     @PostMapping("/login")
-    public ResponseEntity<Users> login(@RequestBody Map<String, String> loginData) {
+    public ResponseEntity<UserResponseDTO> login(@RequestBody Map<String, String> loginData) {
         Users user = userService.authenticate(
                 loginData.get("email"),  // Get email from request body
                 loginData.get("password") // Get password from request body
         );
-        return ResponseEntity.ok(user);
+        UserResponseDTO responseDTO = new UserResponseDTO(user.getId(), user.getName(), user.getEmail());
+        return ResponseEntity.ok(responseDTO);
+    }
+    // DTO for user response (excluding sensitive fields)
+    public static class UserResponseDTO {
+        private Long id;
+        private String name;
+        private String email;
+        // Add other non-sensitive fields as needed
+
+        public UserResponseDTO(Long id, String name, String email) {
+            this.id = id;
+            this.name = name;
+            this.email = email;
+        }
+
+        public Long getId() { return id; }
+        public String getName() { return name; }
+        public String getEmail() { return email; }
     }
 }
