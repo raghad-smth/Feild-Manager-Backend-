@@ -57,7 +57,7 @@ public class BookingService {
 
         FieldSlots slot = FieldSlots.builder()
                 .field(field)
-                .weekDay(new WeekDays(weekDayId, null))
+                .weekDay(WeekDays.builder().id(weekDayId).build())
                 .from(from)
                 .to(to)
                 .price(price)
