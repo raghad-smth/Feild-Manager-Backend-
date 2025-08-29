@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Feild Manager Backend Repo Workflow  
 
 ## Branching Strategy
@@ -41,3 +42,6 @@
 
 * This keeps **main clean**, ensures all work is reviewed, and avoids conflicts.
 * Each teammate only sees others’ changes once they’re merged into `development`.
+=======
+# Back-End-Env-Setup-Task-
+>>>>>>> origin/development
