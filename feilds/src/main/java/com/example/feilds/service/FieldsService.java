@@ -16,10 +16,6 @@ public class FieldsService {
     }
 
     public List<Fields> browseFields(String location, Integer minPlayers, Boolean isActive) {
-        return fieldsRepository.findAll().stream()
-                .filter(field -> location == null || field.getLocationAddress().toLowerCase().contains(location.toLowerCase()))
-                .filter(field -> minPlayers == null || field.getPlayersCapacity() >= minPlayers)
-                .filter(field -> isActive == null || field.getIsActive().equals(isActive))
-                .collect(Collectors.toList());
+        return fieldsRepository.findByFilters(location, minPlayers, isActive);
     }
 }
