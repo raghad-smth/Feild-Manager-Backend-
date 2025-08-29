@@ -266,7 +266,7 @@ public class AdminReviewsHandlerService {
      * Get all admin users
      */
     public List<Users> getAllAdminUsers() {
-        return userRepository.findByRole("admin");
+        return userRepository.findByRole(Users.Role.admin);
     }
 
     /**
