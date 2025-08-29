@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
     Optional<Users> findByEmail(String email);
 
     /**
-     * Find all users by role
+     * Find all users by role enum
      */
-    List<Users> findByRole(String role);
+    List<Users> findByRole(Users.Role role);
 }
