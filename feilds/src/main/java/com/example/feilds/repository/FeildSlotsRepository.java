@@ -6,5 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FeildSlotsRepository extends JpaRepository<FieldSlots, Integer> {
 
-    void save(FieldSlots slot);
 }
