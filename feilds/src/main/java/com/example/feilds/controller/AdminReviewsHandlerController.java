@@ -3,7 +3,6 @@ package com.example.feilds.controller;
 import com.example.feilds.model.Reviews;
 import com.example.feilds.model.Users;
 import com.example.feilds.service.AdminReviewsHandlerService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +12,14 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/admin/reviews")
-@RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class AdminReviewsHandlerController {
 
     private final AdminReviewsHandlerService adminReviewsService;
+    
+    public AdminReviewsHandlerController(AdminReviewsHandlerService adminReviewsService) {
+        this.adminReviewsService = adminReviewsService;
+    }
 
     /**
      * Get all reviews for admin (including hidden ones)
@@ -446,13 +448,25 @@ public class AdminReviewsHandlerController {
     /**
      * DTO for API responses
      */
-    @lombok.Data
-    @lombok.AllArgsConstructor
-    @lombok.NoArgsConstructor
     public static class ApiResponse<T> {
         private boolean success;
         private String message;
         private T data;
+
+        public ApiResponse() {}
+
+        public ApiResponse(boolean success, String message, T data) {
+            this.success = success;
+            this.message = message;
+            this.data = data;
+        }
+
+        public boolean isSuccess() { return success; }
+        public void setSuccess(boolean success) { this.success = success; }
+        public String getMessage() { return message; }
+        public void setMessage(String message) { this.message = message; }
+        public T getData() { return data; }
+        public void setData(T data) { this.data = data; }
 
         public static <T> ApiResponse<T> success(T data, String message) {
             return new ApiResponse<>(true, message, data);
@@ -466,10 +480,16 @@ public class AdminReviewsHandlerController {
     /**
      * DTO for bulk actions
      */
-    @lombok.Data
-    @lombok.NoArgsConstructor
-    @lombok.AllArgsConstructor
     public static class BulkActionRequest {
         private List<Integer> reviewIds;
+
+        public BulkActionRequest() {}
+
+        public BulkActionRequest(List<Integer> reviewIds) {
+            this.reviewIds = reviewIds;
+        }
+
+        public List<Integer> getReviewIds() { return reviewIds; }
+        public void setReviewIds(List<Integer> reviewIds) { this.reviewIds = reviewIds; }
     }
 }

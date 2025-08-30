@@ -4,7 +4,6 @@ import com.example.feilds.model.Reviews;
 import com.example.feilds.model.Users;
 import com.example.feilds.repository.AdminReviewsHandlerRepository;
 import com.example.feilds.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,11 +11,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class AdminReviewsHandlerService {
 
     private final AdminReviewsHandlerRepository adminReviewsRepository;
     private final UserRepository userRepository;
+    
+    public AdminReviewsHandlerService(AdminReviewsHandlerRepository adminReviewsRepository, UserRepository userRepository) {
+        this.adminReviewsRepository = adminReviewsRepository;
+        this.userRepository = userRepository;
+    }
 
     /**
      * Get user by ID and validate existence
@@ -272,26 +275,87 @@ public class AdminReviewsHandlerService {
     /**
      * Inner class for review statistics
      */
-    @lombok.Data
-    @lombok.Builder
-    @lombok.AllArgsConstructor
-    @lombok.NoArgsConstructor
     public static class ReviewStatistics {
         private Long totalReviews;
         private Long visibleReviews;
         private Long hiddenReviews;
         private Double hiddenPercentage;
+
+        public ReviewStatistics() {}
+
+        public ReviewStatistics(Long totalReviews, Long visibleReviews, Long hiddenReviews, Double hiddenPercentage) {
+            this.totalReviews = totalReviews;
+            this.visibleReviews = visibleReviews;
+            this.hiddenReviews = hiddenReviews;
+            this.hiddenPercentage = hiddenPercentage;
+        }
+
+        public Long getTotalReviews() { return totalReviews; }
+        public void setTotalReviews(Long totalReviews) { this.totalReviews = totalReviews; }
+        public Long getVisibleReviews() { return visibleReviews; }
+        public void setVisibleReviews(Long visibleReviews) { this.visibleReviews = visibleReviews; }
+        public Long getHiddenReviews() { return hiddenReviews; }
+        public void setHiddenReviews(Long hiddenReviews) { this.hiddenReviews = hiddenReviews; }
+        public Double getHiddenPercentage() { return hiddenPercentage; }
+        public void setHiddenPercentage(Double hiddenPercentage) { this.hiddenPercentage = hiddenPercentage; }
+
+        public static ReviewStatisticsBuilder builder() {
+            return new ReviewStatisticsBuilder();
+        }
+
+        public static class ReviewStatisticsBuilder {
+            private Long totalReviews;
+            private Long visibleReviews;
+            private Long hiddenReviews;
+            private Double hiddenPercentage;
+
+            public ReviewStatisticsBuilder totalReviews(Long totalReviews) {
+                this.totalReviews = totalReviews;
+                return this;
+            }
+
+            public ReviewStatisticsBuilder visibleReviews(Long visibleReviews) {
+                this.visibleReviews = visibleReviews;
+                return this;
+            }
+
+            public ReviewStatisticsBuilder hiddenReviews(Long hiddenReviews) {
+                this.hiddenReviews = hiddenReviews;
+                return this;
+            }
+
+            public ReviewStatisticsBuilder hiddenPercentage(Double hiddenPercentage) {
+                this.hiddenPercentage = hiddenPercentage;
+                return this;
+            }
+
+            public ReviewStatistics build() {
+                return new ReviewStatistics(totalReviews, visibleReviews, hiddenReviews, hiddenPercentage);
+            }
+        }
     }
 
     /**
      * Inner class for bulk operation results
      */
-    @lombok.Data
-    @lombok.AllArgsConstructor
-    @lombok.NoArgsConstructor
     public static class BulkActionResult {
         private Integer successCount;
         private Integer failCount;
         private String message;
+
+        public BulkActionResult() {}
+
+        public BulkActionResult(Integer successCount, Integer failCount, String message) {
+            this.successCount = successCount;
+            this.failCount = failCount;
+            this.message = message;
+        }
+
+        public Integer getSuccessCount() { return successCount; }
+        public void setSuccessCount(Integer successCount) { this.successCount = successCount; }
+        public Integer getFailCount() { return failCount; }
+        public void setFailCount(Integer failCount) { this.failCount = failCount; }
+        public String getMessage() { return message; }
+        public void setMessage(String message) { this.message = message; }
     }
 }

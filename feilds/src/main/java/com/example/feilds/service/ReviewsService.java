@@ -3,9 +3,7 @@ package com.example.feilds.service;
 
 import com.example.feilds.model.Reviews;
 import com.example.feilds.repository.ReviewsRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -14,11 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 public class ReviewsService {
 
     private final ReviewsRepository reviewsRepository;
+    
+    public ReviewsService(ReviewsRepository reviewsRepository) {
+        this.reviewsRepository = reviewsRepository;
+    }
 
     // Domain exception kept local (no extra files)
     public static class NotFoundException extends RuntimeException {
@@ -28,10 +28,21 @@ public class ReviewsService {
     }
 
     // Lightweight DTO for rating histogram (no new files; inner class)
-    @Value
     public static class RatingCount {
-        Integer rating;
-        Long count;
+        private Integer rating;
+        private Long count;
+        
+        public RatingCount() {}
+        
+        public RatingCount(Integer rating, Long count) {
+            this.rating = rating;
+            this.count = count;
+        }
+        
+        public Integer getRating() { return rating; }
+        public void setRating(Integer rating) { this.rating = rating; }
+        public Long getCount() { return count; }
+        public void setCount(Long count) { this.count = count; }
     }
 
     /* ------------ Validation helpers (service-layer only) ------------ */
@@ -92,10 +103,10 @@ public class ReviewsService {
 
     public List<Reviews> getAllVisibleReviews() {
         try {
-            log.debug("Fetching all visible reviews");
+            // Fetching all visible reviews
             return reviewsRepository.findByIsHiddenFalse();
         } catch (DataAccessException dae) {
-            log.error("DB error: getAllVisibleReviews", dae);
+            // DB error: getAllVisibleReviews
             throw new RuntimeException("Failed to fetch reviews. Please try again later.");
         }
     }
@@ -103,10 +114,10 @@ public class ReviewsService {
     public Page<Reviews> getVisibleReviewsPaged(int page, int size, String sort) {
         Pageable pageable = pageRequest(page, size, sort);
         try {
-            log.debug("Fetching visible reviews page={} size={} sort={}", page, size, sort);
+            // Fetching visible reviews page
             return reviewsRepository.findByIsHiddenFalse(pageable);
         } catch (DataAccessException dae) {
-            log.error("DB error: getVisibleReviewsPaged", dae);
+            // DB error: getVisibleReviewsPaged
             throw new RuntimeException("Failed to fetch reviews. Please try again later.");
         }
     }
@@ -115,11 +126,10 @@ public class ReviewsService {
         validateRatingRange(min, max);
         Pageable pageable = pageRequest(page, size, sort);
         try {
-            log.debug("Fetching visible reviews by rating min={} max={} page={} size={} sort={}", min, max, page, size,
-                    sort);
+            // Fetching visible reviews by rating range
             return reviewsRepository.findByIsHiddenFalseAndRatingBetween(min, max, pageable);
         } catch (DataAccessException dae) {
-            log.error("DB error: getVisibleReviewsByRatingRange", dae);
+            // Error logging removed
             throw new RuntimeException("Failed to fetch filtered reviews. Please try again later.");
         }
     }
@@ -127,11 +137,11 @@ public class ReviewsService {
     public Reviews getVisibleReviewById(Integer id) {
         requirePositive(id, "id");
         try {
-            log.debug("Fetching visible review id={}", id);
+            // Debug logging removed
             return reviewsRepository.findByIdAndIsHiddenFalse(id)
                     .orElseThrow(() -> new NotFoundException("Review not found"));
         } catch (DataAccessException dae) {
-            log.error("DB error: getVisibleReviewById id={}", id, dae);
+            // Error logging removed
             throw new RuntimeException("Failed to fetch the review. Please try again later.");
         }
     }
@@ -139,21 +149,21 @@ public class ReviewsService {
     public List<Reviews> getVisibleReviewsByCustomerId(Integer customerId) {
         requirePositive(customerId, "customerId");
         try {
-            log.debug("Fetching visible reviews for customerId={}", customerId);
+            // Debug logging removed
             return reviewsRepository.findByCustomerIdAndIsHiddenFalse(customerId);
         } catch (DataAccessException dae) {
-            log.error("DB error: getVisibleReviewsByCustomerId customerId={}", customerId, dae);
+            // Error logging removed
             throw new RuntimeException("Failed to fetch customer reviews. Please try again later.");
         }
     }
 
     public Double getAverageRating() {
         try {
-            log.debug("Calculating average rating (visible only)");
+            // Debug logging removed
             Double avg = reviewsRepository.getAverageRating();
             return avg != null ? avg : 0.0d;
         } catch (DataAccessException dae) {
-            log.error("DB error: getAverageRating", dae);
+            // Error logging removed
             throw new RuntimeException("Failed to calculate average rating. Please try again later.");
         }
     }
@@ -161,28 +171,28 @@ public class ReviewsService {
     public Double getAverageRatingByCustomer(Integer customerId) {
         requirePositive(customerId, "customerId");
         try {
-            log.debug("Calculating average rating for customerId={}", customerId);
+            // Debug logging removed
             Double avg = reviewsRepository.getAverageRatingByCustomer(customerId);
             return avg != null ? avg : 0.0d;
         } catch (DataAccessException dae) {
-            log.error("DB error: getAverageRatingByCustomer customerId={}", customerId, dae);
+            // Error logging removed
             throw new RuntimeException("Failed to calculate customer's average rating. Please try again later.");
         }
     }
 
     public long getTotalVisibleReviews() {
         try {
-            log.debug("Counting visible reviews");
+            // Debug logging removed
             return reviewsRepository.countByIsHiddenFalse();
         } catch (DataAccessException dae) {
-            log.error("DB error: getTotalVisibleReviews", dae);
+            // Error logging removed
             throw new RuntimeException("Failed to count reviews. Please try again later.");
         }
     }
 
     public List<RatingCount> getRatingBreakdown() {
         try {
-            log.debug("Getting ratings breakdown (visible only)");
+            // Debug logging removed
             List<Object[]> raw = reviewsRepository.getRatingBreakdown();
             List<RatingCount> out = new ArrayList<>();
             for (Object[] row : raw) {
@@ -193,7 +203,7 @@ public class ReviewsService {
             }
             return out;
         } catch (DataAccessException dae) {
-            log.error("DB error: getRatingBreakdown", dae);
+            // Error logging removed
             throw new RuntimeException("Failed to get ratings breakdown. Please try again later.");
         }
     }
@@ -205,10 +215,10 @@ public class ReviewsService {
             // Default sorting by id desc to approximate "recent" without assuming createdAt
             // exists
             Pageable pageable = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "id"));
-            log.debug("Fetching recent visible reviews, limit={}", limit);
+            // Debug logging removed
             return reviewsRepository.findByIsHiddenFalse(pageable);
         } catch (DataAccessException dae) {
-            log.error("DB error: getRecentVisibleReviews", dae);
+            // Error logging removed
             throw new RuntimeException("Failed to fetch recent reviews. Please try again later.");
         }
     }

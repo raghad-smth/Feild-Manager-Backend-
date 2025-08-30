@@ -3,10 +3,6 @@ package com.example.feilds.controller;
 
 import com.example.feilds.model.Reviews;
 import com.example.feilds.service.ReviewsService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,20 +13,36 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/reviews")
-@RequiredArgsConstructor
-@Slf4j
 public class ReviewsController {
 
     private final ReviewsService reviewsService;
+    
+    public ReviewsController(ReviewsService reviewsService) {
+        this.reviewsService = reviewsService;
+    }
 
     // Consistent API wrapper (no new files)
-    @Data
-    @AllArgsConstructor
     private static class ApiResponse<T> {
         private boolean success;
         private String message;
         private T data;
         private Instant timestamp;
+
+        public ApiResponse(boolean success, String message, T data, Instant timestamp) {
+            this.success = success;
+            this.message = message;
+            this.data = data;
+            this.timestamp = timestamp;
+        }
+
+        public boolean isSuccess() { return success; }
+        public void setSuccess(boolean success) { this.success = success; }
+        public String getMessage() { return message; }
+        public void setMessage(String message) { this.message = message; }
+        public T getData() { return data; }
+        public void setData(T data) { this.data = data; }
+        public Instant getTimestamp() { return timestamp; }
+        public void setTimestamp(Instant timestamp) { this.timestamp = timestamp; }
 
         public static <T> ApiResponse<T> ok(String message, T data) {
             return new ApiResponse<>(true, message, data, Instant.now());
@@ -119,19 +131,19 @@ public class ReviewsController {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiResponse<Void>> handleIllegalArgument(IllegalArgumentException ex) {
-        log.warn("Validation error: {}", ex.getMessage());
+        // Validation error
         return ResponseEntity.badRequest().body(ApiResponse.fail(ex.getMessage()));
     }
 
     @ExceptionHandler(ReviewsService.NotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleNotFound(ReviewsService.NotFoundException ex) {
-        log.warn("Not found: {}", ex.getMessage());
+        // Not found error
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.fail(ex.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleOtherErrors(Exception ex) {
-        log.error("Unexpected error", ex);
+        // Unexpected error
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.fail("An unexpected error occurred. Please try again later."));
     }

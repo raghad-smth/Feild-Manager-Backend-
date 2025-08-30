@@ -11,10 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequiredArgsConstructor
 public class UpdateProfileController {
 
     private final UpdateProfileService updateProfileService;
+    
+    public UpdateProfileController(UpdateProfileService updateProfileService) {
+        this.updateProfileService = updateProfileService;
+    }
 
     @PutMapping("/api/users/{userId}/profile")
     public ResponseEntity<?> updateProfile(

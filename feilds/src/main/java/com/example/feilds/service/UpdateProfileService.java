@@ -6,10 +6,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class UpdateProfileService {
 
     private final UpdateProfileRepository updateProfileRepository;
+    
+    public UpdateProfileService(UpdateProfileRepository updateProfileRepository) {
+        this.updateProfileRepository = updateProfileRepository;
+    }
 
     public Users updateProfile(Integer userId, String name, String phone, String password) {
         if (userId == null || userId <= 0) {
